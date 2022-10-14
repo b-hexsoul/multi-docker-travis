@@ -1,0 +1,19 @@
+language: generic
+sudo: required
+services:
+  - docker
+
+before_instaall:
+  #build out test version using dev file, override with -f specify dockerfile and then specify build context
+  - docker build -t hexsoulb/react-test -f ./client/Dockerfile.dev ./client
+
+# primary test section, if any tests fail here, the travis build will fail
+script:
+  - docker run -e CI=true hexsoulb/react-test npm test
+
+# build production versions
+after_success:
+  - docker build -t hexsoulb/multi-client ./client
+  - docker build -t hexsoulb/multi-nginx ./nginx
+  - docker build -t hexsoulb/multi-server ./server
+  - docker build -t hexsoulb/multi-worker ./worker
