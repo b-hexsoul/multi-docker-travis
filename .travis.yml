@@ -17,3 +17,10 @@ after_success:
   - docker build -t hexsoulb/multi-nginx ./nginx
   - docker build -t hexsoulb/multi-server ./server
   - docker build -t hexsoulb/multi-worker ./worker
+  # take these images and push to docker hub
+  # login to docker CLI
+  - echo "$DOCKER_PW" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push hexsoulb/multi-client
+  - docker push hexsoulb/multi-nginx
+  - docker push hexsoulb/multi-server
+  - docker push hexsoulb/multi-worker
